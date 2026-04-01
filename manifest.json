@@ -1,11 +1,12 @@
 {
   "name": "Tiyatro Yönetim",
   "short_name": "Tiyatro",
-  "description": "Tiyatro gelir gider ve kar hesaplama uygulaması",
-  "start_url": "index.html",
+  "start_url": "/Artist/",
+  "scope": "/Artist/",
   "display": "standalone",
   "background_color": "#0f172a",
   "theme_color": "#0f172a",
+  "description": "Tiyatro gelir gider uygulaması",
   "icons": [
     {
       "src": "icon-192.png",
