@@ -4,11 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link rel="manifest" href="manifest.json">
+<link rel="manifest" href="./manifest.json">
 <meta name="theme-color" content="#0f172a">
 
-<link rel="apple-touch-icon" href="icon-192.png">
-<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="apple-touch-icon" href="./icon-192.png">
 
 <title>Artist Sahne</title>
 
@@ -31,11 +30,6 @@ body {
     margin-top:14px;
     border-radius:18px;
     cursor:pointer;
-    transition:0.2s;
-}
-
-.btn-img:active {
-    transform:scale(0.97);
 }
 
 .card {
@@ -57,20 +51,9 @@ input, select {
 
 .hidden { display:none; }
 
-.result {
-    padding:15px;
-    border-radius:10px;
-    text-align:center;
-}
-
+.result { padding:15px; border-radius:10px; text-align:center; }
 .green { background:#166534; }
 .red { background:#7f1d1d; }
-
-canvas {
-    margin-top:10px;
-    background:#111;
-    border-radius:10px;
-}
 </style>
 </head>
 
@@ -79,57 +62,53 @@ canvas {
 <div class="container">
 
 <div id="menu">
-    <h1 style="text-align:center;">🎭 Artist Sahne</h1>
+<h1 style="text-align:center;">🎭 Artist Sahne</h1>
 
-    <img src="btn-oyun.png" class="btn-img" onclick="go('oyun')">
-    <img src="btn-hesap.png" class="btn-img" onclick="go('hesap')">
-    <img src="btn-rapor.png" class="btn-img" onclick="go('rapor')">
+<img src="./btn-oyun.png" class="btn-img" onclick="go('oyun')">
+<img src="./btn-hesap.png" class="btn-img" onclick="go('hesap')">
+<img src="./btn-rapor.png" class="btn-img" onclick="go('rapor')">
 </div>
 
 <div id="oyun" class="hidden">
-    <h2>Oyunlar</h2>
-    <input id="oyunInput" placeholder="Oyun adı">
-    <button onclick="addGame()">Ekle</button>
-    <div id="oyunListe"></div>
-    <button onclick="go('menu')">Geri</button>
+<h2>Oyunlar</h2>
+<input id="oyunInput" placeholder="Oyun adı">
+<button onclick="addGame()">Ekle</button>
+<div id="oyunListe"></div>
+<button onclick="go('menu')">Geri</button>
 </div>
 
 <div id="hesap" class="hidden">
-    <h2>Hesaplama</h2>
+<h2>Hesaplama</h2>
 
-    <select id="oyunSelect"></select>
+<select id="oyunSelect"></select>
 
-    <input id="price" placeholder="Bilet fiyatı">
-    <input id="sold" placeholder="Satılan">
-    <input id="capacity" placeholder="Kapasite">
+<input id="price" placeholder="Bilet fiyatı">
+<input id="sold" placeholder="Satılan">
+<input id="capacity" placeholder="Kapasite">
 
-    <input id="equip" placeholder="Ekipman">
-    <input id="assistant" placeholder="Asistan">
-    <input id="rent" placeholder="Kira">
+<input id="equip" placeholder="Ekipman">
+<input id="assistant" placeholder="Asistan">
+<input id="rent" placeholder="Kira">
 
-    <button onclick="hesapla()">Hesapla</button>
-    <button onclick="kaydet()">Kaydet</button>
+<button onclick="hesapla()">Hesapla</button>
+<button onclick="kaydet()">Kaydet</button>
 
-    <div id="sonuc"></div>
+<div id="sonuc"></div>
 
-    <button onclick="go('menu')">Geri</button>
+<button onclick="go('menu')">Geri</button>
 </div>
 
 <div id="rapor" class="hidden">
-    <h2>Raporlar</h2>
-
-    <canvas id="grafik" width="320" height="160"></canvas>
-
-    <div id="raporListe"></div>
-
-    <button onclick="go('menu')">Geri</button>
+<h2>Raporlar</h2>
+<div id="raporListe"></div>
+<button onclick="go('menu')">Geri</button>
 </div>
 
 </div>
 
 <script>
 if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("sw.js");
+  navigator.serviceWorker.register("./sw.js");
 }
 
 let oyunlar = JSON.parse(localStorage.getItem("oyunlar")) || [];
@@ -146,19 +125,20 @@ function go(id){
     if(id==="rapor") loadReports();
 }
 
+// OYUN
 function addGame(){
-    let val = oyunInput.value.trim();
+    let val = document.getElementById("oyunInput").value.trim();
     if(!val) return;
     oyunlar.push(val);
     localStorage.setItem("oyunlar", JSON.stringify(oyunlar));
-    oyunInput.value="";
     loadGames();
 }
 
 function loadGames(){
-    oyunListe.innerHTML="";
+    let el = document.getElementById("oyunListe");
+    el.innerHTML="";
     oyunlar.forEach((o,i)=>{
-        oyunListe.innerHTML += `<div class="card">${o} <button onclick="deleteGame(${i})">Sil</button></div>`;
+        el.innerHTML += `<div class="card">${o} <button onclick="deleteGame(${i})">Sil</button></div>`;
     });
 }
 
@@ -169,20 +149,34 @@ function deleteGame(i){
 }
 
 function loadSelect(){
-    oyunSelect.innerHTML="";
+    let s = document.getElementById("oyunSelect");
+    s.innerHTML="";
     oyunlar.forEach(o=>{
-        oyunSelect.innerHTML += `<option>${o}</option>`;
+        s.innerHTML += `<option>${o}</option>`;
     });
 }
 
+// HESAP FIX
 function hesapla(){
-    let gelir = price.value * sold.value;
-    let gider = (+equip.value||0)+(+assistant.value||0)+(+rent.value||0)+7000;
+    let price = +document.getElementById("price").value || 0;
+    let sold = +document.getElementById("sold").value || 0;
+    let cap = +document.getElementById("capacity").value || 0;
+
+    let equip = +document.getElementById("equip").value || 500;
+    let assistant = +document.getElementById("assistant").value || 0;
+    let rent = +document.getElementById("rent").value || 0;
+
+    let gider = equip + assistant + rent + 7000;
+    let gelir = price * sold;
     let kar = gelir - gider;
 
-    sonHesap = { oyun: oyunSelect.value, kar };
+    sonHesap = {
+        oyun: document.getElementById("oyunSelect").value,
+        kar
+    };
 
-    sonuc.innerHTML = `<div class="result ${kar>=0?"green":"red"}">Kar: ${kar} ₺</div>`;
+    document.getElementById("sonuc").innerHTML =
+        `<div class="result ${kar>=0?"green":"red"}">Kar: ${kar.toLocaleString("tr-TR")} ₺</div>`;
 }
 
 function kaydet(){
@@ -191,10 +185,12 @@ function kaydet(){
     localStorage.setItem("raporlar", JSON.stringify(raporlar));
 }
 
+// RAPOR
 function loadReports(){
-    raporListe.innerHTML="";
+    let el = document.getElementById("raporListe");
+    el.innerHTML="";
     raporlar.forEach(r=>{
-        raporListe.innerHTML += `<div class="card">${r.oyun} - ${r.kar} ₺</div>`;
+        el.innerHTML += `<div class="card">${r.oyun} - ${r.kar} ₺</div>`;
     });
 }
 

@@ -1,17 +1,17 @@
-const CACHE_NAME = "artist-v1";
+const CACHE_NAME = "artist-v2";
 
 self.addEventListener("install", e => {
   e.waitUntil(
     caches.open(CACHE_NAME).then(cache => {
       return cache.addAll([
-        "/Artist/",
-        "/Artist/index.html",
-        "/Artist/manifest.json",
-        "/Artist/icon-192.png",
-        "/Artist/icon-512.png",
-        "/Artist/btn-oyun.png",
-        "/Artist/btn-hesap.png",
-        "/Artist/btn-rapor.png"
+        "./",
+        "./index.html",
+        "./manifest.json",
+        "./icon-192.png",
+        "./icon-512.png",
+        "./btn-oyun.png",
+        "./btn-hesap.png",
+        "./btn-rapor.png"
       ]);
     })
   );
