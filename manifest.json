@@ -1,12 +1,12 @@
 {
-  "name": "Tiyatro Yönetim",
-  "short_name": "Tiyatro",
+  "name": "Artist Sahne",
+  "short_name": "Artist",
   "start_url": "/Artist/",
   "scope": "/Artist/",
   "display": "standalone",
   "background_color": "#0f172a",
   "theme_color": "#0f172a",
-  "description": "Tiyatro gelir gider uygulaması",
+  "description": "Tiyatro yönetim, gelir gider ve raporlama uygulaması",
   "icons": [
     {
       "src": "icon-192.png",

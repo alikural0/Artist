@@ -1,297 +1,205 @@
-!DOCTYPE html
-html lang=tr
-head
-meta charset=UTF-8
-meta name=viewport content=width=device-width, initial-scale=1.0
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-!-- PWA --
-link rel=manifest href=manifest.json
-meta name=theme-color content=#0f172a
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0f172a">
 
-!-- iOS --
-link rel=apple-touch-icon sizes=180x180 href=icon-192.png
-meta name=apple-mobile-web-app-capable content=yes
-meta name=apple-mobile-web-app-status-bar-style content=black
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
 
-titleTiyatro Yönetimtitle
+<title>Artist Sahne</title>
 
-style
+<style>
 body {
-    margin0;
-    font-family'Segoe UI';
-    background#0f172a;
-    colorwhite;
+    margin:0;
+    font-family:'Segoe UI';
+    background:#0f172a;
+    color:white;
 }
 
 .container {
-    max-width600px;
-    marginauto;
-    padding20px;
+    max-width:600px;
+    margin:auto;
+    padding:20px;
 }
 
- PNG BUTON 
 .btn-img {
-    width100%;
-    margin-top14px;
-    border-radius18px;
-    cursorpointer;
-    transition0.2s;
+    width:100%;
+    margin-top:14px;
+    border-radius:18px;
+    cursor:pointer;
+    transition:0.2s;
 }
 
-.btn-imgactive {
-    transformscale(0.97);
+.btn-img:active {
+    transform:scale(0.97);
 }
 
- CARD 
 .card {
-    background#1e293b;
-    padding15px;
-    border-radius12px;
-    margin-bottom12px;
+    background:#1e293b;
+    padding:15px;
+    border-radius:12px;
+    margin-bottom:12px;
 }
 
 input, select {
-    width100%;
-    padding10px;
-    border-radius8px;
-    bordernone;
-    margin6px 0;
-    background#334155;
-    colorwhite;
+    width:100%;
+    padding:10px;
+    border-radius:8px;
+    border:none;
+    margin:6px 0;
+    background:#334155;
+    color:white;
 }
 
-.hidden { displaynone; }
+.hidden { display:none; }
 
 .result {
-    padding15px;
-    border-radius10px;
-    text-aligncenter;
+    padding:15px;
+    border-radius:10px;
+    text-align:center;
 }
 
-.green { background#166534; }
-.red { background#7f1d1d; }
+.green { background:#166534; }
+.red { background:#7f1d1d; }
 
 canvas {
-    margin-top10px;
-    background#111;
-    border-radius10px;
+    margin-top:10px;
+    background:#111;
+    border-radius:10px;
 }
-style
-head
+</style>
+</head>
 
-body
+<body>
 
-div class=container
+<div class="container">
 
-!-- MENU --
-div id=menu
-    h1 style=text-aligncenter;🎭 Tiyatro Yönetimh1
+<div id="menu">
+    <h1 style="text-align:center;">🎭 Artist Sahne</h1>
 
-    img src=btn-oyun.png class=btn-img onclick=go('oyun')
-    img src=btn-hesap.png class=btn-img onclick=go('hesap')
-    img src=btn-rapor.png class=btn-img onclick=go('rapor')
-div
+    <img src="btn-oyun.png" class="btn-img" onclick="go('oyun')">
+    <img src="btn-hesap.png" class="btn-img" onclick="go('hesap')">
+    <img src="btn-rapor.png" class="btn-img" onclick="go('rapor')">
+</div>
 
-!-- OYUN --
-div id=oyun class=hidden
-    h2🎬 Oyunlarh2
+<div id="oyun" class="hidden">
+    <h2>Oyunlar</h2>
+    <input id="oyunInput" placeholder="Oyun adı">
+    <button onclick="addGame()">Ekle</button>
+    <div id="oyunListe"></div>
+    <button onclick="go('menu')">Geri</button>
+</div>
 
-    input id=oyunInput placeholder=Oyun adı
-    button onclick=addGame()Eklebutton
+<div id="hesap" class="hidden">
+    <h2>Hesaplama</h2>
 
-    div id=oyunListediv
+    <select id="oyunSelect"></select>
 
-    button onclick=go('menu')⬅ Geributton
-div
+    <input id="price" placeholder="Bilet fiyatı">
+    <input id="sold" placeholder="Satılan">
+    <input id="capacity" placeholder="Kapasite">
 
-!-- HESAP --
-div id=hesap class=hidden
-    h2🧮 Hesaplamah2
+    <input id="equip" placeholder="Ekipman">
+    <input id="assistant" placeholder="Asistan">
+    <input id="rent" placeholder="Kira">
 
-    div class=card
-        select id=oyunSelectselect
-    div
+    <button onclick="hesapla()">Hesapla</button>
+    <button onclick="kaydet()">Kaydet</button>
 
-    div class=card
-        input id=price placeholder=Bilet fiyatı
-        input id=sold placeholder=Satılan bilet
-        input id=capacity placeholder=Kapasite
-    div
+    <div id="sonuc"></div>
 
-    div class=card
-        input id=equip placeholder=Ekipman
-        input id=assistant placeholder=Asistan
-        input id=rent placeholder=Kira
-    div
+    <button onclick="go('menu')">Geri</button>
+</div>
 
-    button onclick=hesapla()Hesaplabutton
-    button onclick=kaydet()💾 Kaydetbutton
+<div id="rapor" class="hidden">
+    <h2>Raporlar</h2>
 
-    div id=detaydiv
-    div id=sonucdiv
+    <canvas id="grafik" width="320" height="160"></canvas>
 
-    button onclick=go('menu')⬅ Geributton
-div
+    <div id="raporListe"></div>
 
-!-- RAPOR --
-div id=rapor class=hidden
-    h2📊 Raporlarh2
+    <button onclick="go('menu')">Geri</button>
+</div>
 
-    div id=toplamKardiv
+</div>
 
-    canvas id=grafik width=320 height=160canvas
-
-    div id=raporListediv
-
-    button onclick=go('menu')⬅ Geributton
-div
-
-div
-
-script
- SERVICE WORKER
-if (serviceWorker in navigator) {
-  navigator.serviceWorker.register(sw.js);
+<script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("sw.js");
 }
 
- DATA
-let oyunlar = JSON.parse(localStorage.getItem(oyunlar))  [];
-let raporlar = JSON.parse(localStorage.getItem(raporlar))  [];
+let oyunlar = JSON.parse(localStorage.getItem("oyunlar")) || [];
+let raporlar = JSON.parse(localStorage.getItem("raporlar")) || [];
 let sonHesap = null;
 
-function tl(x){
-    return Number(x).toLocaleString(tr-TR) +  ₺;
-}
-
- NAV
 function go(id){
-    [menu,oyun,hesap,rapor].forEach(x={
-        document.getElementById(x).classList.add(hidden);
+    ["menu","oyun","hesap","rapor"].forEach(x=>{
+        document.getElementById(x).classList.add("hidden");
     });
-    document.getElementById(id).classList.remove(hidden);
+    document.getElementById(id).classList.remove("hidden");
 
-    if(id===hesap) loadSelect();
-    if(id===rapor){
-        loadReports();
-        toplamKar();
-        grafik();
-    }
+    if(id==="hesap") loadSelect();
+    if(id==="rapor") loadReports();
 }
 
- OYUN
 function addGame(){
-    let val = document.getElementById(oyunInput).value.trim();
+    let val = oyunInput.value.trim();
     if(!val) return;
-
     oyunlar.push(val);
-    localStorage.setItem(oyunlar, JSON.stringify(oyunlar));
-    document.getElementById(oyunInput).value=;
+    localStorage.setItem("oyunlar", JSON.stringify(oyunlar));
+    oyunInput.value="";
     loadGames();
 }
 
 function loadGames(){
-    let el = document.getElementById(oyunListe);
-    el.innerHTML=;
-    oyunlar.forEach((o,i)={
-        el.innerHTML += `
-        div class=card
-            ${o}
-            button onclick=deleteGame(${i})Silbutton
-        div`;
+    oyunListe.innerHTML="";
+    oyunlar.forEach((o,i)=>{
+        oyunListe.innerHTML += `<div class="card">${o} <button onclick="deleteGame(${i})">Sil</button></div>`;
     });
 }
 
 function deleteGame(i){
     oyunlar.splice(i,1);
-    localStorage.setItem(oyunlar, JSON.stringify(oyunlar));
+    localStorage.setItem("oyunlar", JSON.stringify(oyunlar));
     loadGames();
 }
 
 function loadSelect(){
-    let s = document.getElementById(oyunSelect);
-    s.innerHTML=;
-    oyunlar.forEach(o={
-        s.innerHTML += `option${o}option`;
+    oyunSelect.innerHTML="";
+    oyunlar.forEach(o=>{
+        oyunSelect.innerHTML += `<option>${o}</option>`;
     });
 }
 
- HESAP
 function hesapla(){
-    let price = +price.value  0;
-    let sold = +sold.value  0;
-    let cap = +capacity.value  0;
-
-    let equip = +equip.value  500;
-    let assistant = +assistant.value  0;
-    let rent = +rent.value  0;
-
-    let gider = equip + assistant + rent + 3000 + 4000 + (cap=8050002500);
-    let gelir = price  sold;
+    let gelir = price.value * sold.value;
+    let gider = (+equip.value||0)+(+assistant.value||0)+(+rent.value||0)+7000;
     let kar = gelir - gider;
-    let basabas = price0  Math.ceil(giderprice)  0;
 
-    sonHesap = {
-        oyun oyunSelect.value,
-        gelir, gider, kar, basabas,
-        tarih new Date().toLocaleDateString()
-    };
+    sonHesap = { oyun: oyunSelect.value, kar };
 
-    detay.innerHTML = `div class=cardGider ${tl(gider)}div`;
-
-    sonuc.innerHTML = `
-    div class=result ${kar=0greenred}
-        Kar ${tl(kar)}br
-        Başabaş ${basabas}
-    div`;
+    sonuc.innerHTML = `<div class="result ${kar>=0?"green":"red"}">Kar: ${kar} ₺</div>`;
 }
 
- KAYDET
 function kaydet(){
     if(!sonHesap) return;
     raporlar.unshift(sonHesap);
-    localStorage.setItem(raporlar, JSON.stringify(raporlar));
-    alert(Kaydedildi);
+    localStorage.setItem("raporlar", JSON.stringify(raporlar));
 }
 
- RAPOR
 function loadReports(){
-    raporListe.innerHTML=;
-    raporlar.forEach((r,i)={
-        raporListe.innerHTML += `
-        div class=card
-            ${r.oyun} - ${tl(r.kar)}
-            button onclick=deleteReport(${i})Silbutton
-        div`;
-    });
-}
-
-function deleteReport(i){
-    raporlar.splice(i,1);
-    localStorage.setItem(raporlar, JSON.stringify(raporlar));
-    loadReports();
-    toplamKar();
-    grafik();
-}
-
- TOPLAM
-function toplamKar(){
-    let total = raporlar.reduce((a,b)=a+b.kar,0);
-    toplamKar.innerHTML = `div class=cardToplam ${tl(total)}div`;
-}
-
- GRAFİK
-function grafik(){
-    let ctx = grafik.getContext(2d);
-    ctx.clearRect(0,0,320,160);
-
-    raporlar.forEach((r,i)={
-        ctx.fillStyle = r.kar=0  #22c55e  #ef4444;
-        ctx.fillRect(i30+10,150 - r.kar10,20, r.kar10);
+    raporListe.innerHTML="";
+    raporlar.forEach(r=>{
+        raporListe.innerHTML += `<div class="card">${r.oyun} - ${r.kar} ₺</div>`;
     });
 }
 
 loadGames();
-script
+</script>
 
-body
-html
+</body>
+</html>
