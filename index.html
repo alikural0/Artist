@@ -1,332 +1,297 @@
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+!DOCTYPE html
+html lang=tr
+head
+meta charset=UTF-8
+meta name=viewport content=width=device-width, initial-scale=1.0
 
-<!-- ✅ PWA -->
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#0f172a">
+!-- PWA --
+link rel=manifest href=manifest.json
+meta name=theme-color content=#0f172a
 
-<!-- ✅ iOS FIX -->
-<link rel="apple-touch-icon" sizes="180x180" href="icon-192.png">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
+!-- iOS --
+link rel=apple-touch-icon sizes=180x180 href=icon-192.png
+meta name=apple-mobile-web-app-capable content=yes
+meta name=apple-mobile-web-app-status-bar-style content=black
 
-<title>Tiyatro Yönetim</title>
+titleTiyatro Yönetimtitle
 
-<style>
+style
 body {
-    margin:0;
-    font-family: 'Segoe UI';
-    background:#0f172a;
-    color:white;
+    margin0;
+    font-family'Segoe UI';
+    background#0f172a;
+    colorwhite;
 }
 
 .container {
-    max-width:600px;
-    margin:auto;
-    padding:20px;
+    max-width600px;
+    marginauto;
+    padding20px;
 }
 
-h1,h2 { text-align:center; }
-
-button {
-    width:100%;
-    padding:12px;
-    border:none;
-    border-radius:10px;
-    margin-top:10px;
-    font-weight:bold;
-    cursor:pointer;
+ PNG BUTON 
+.btn-img {
+    width100%;
+    margin-top14px;
+    border-radius18px;
+    cursorpointer;
+    transition0.2s;
 }
 
-.primary { background:#3b82f6; }
-.success { background:#22c55e; }
-.danger { background:#ef4444; }
+.btn-imgactive {
+    transformscale(0.97);
+}
 
+ CARD 
 .card {
-    background:#1e293b;
-    padding:15px;
-    border-radius:12px;
-    margin-bottom:12px;
+    background#1e293b;
+    padding15px;
+    border-radius12px;
+    margin-bottom12px;
 }
 
 input, select {
-    width:100%;
-    padding:10px;
-    border-radius:8px;
-    border:none;
-    margin:6px 0;
-    background:#334155;
-    color:white;
+    width100%;
+    padding10px;
+    border-radius8px;
+    bordernone;
+    margin6px 0;
+    background#334155;
+    colorwhite;
 }
 
-.hidden { display:none; }
+.hidden { displaynone; }
 
-.result { padding:15px; border-radius:10px; text-align:center; }
-.green { background:#166534; }
-.red { background:#7f1d1d; }
+.result {
+    padding15px;
+    border-radius10px;
+    text-aligncenter;
+}
 
-.label { font-size:14px; color:#cbd5f5; }
+.green { background#166534; }
+.red { background#7f1d1d; }
 
 canvas {
-    margin-top:10px;
-    background:#111;
-    border-radius:10px;
+    margin-top10px;
+    background#111;
+    border-radius10px;
 }
-</style>
-</head>
+style
+head
 
-<body>
+body
 
-<div class="container">
+div class=container
 
-<div id="menu">
-    <h1>🎭 Tiyatro Yönetim</h1>
-    <button class="primary" onclick="go('oyun')">🎬 Oyunlar</button>
-    <button class="success" onclick="go('hesap')">🧮 Hesaplama</button>
-    <button class="primary" onclick="go('rapor')">📊 Raporlar</button>
-</div>
+!-- MENU --
+div id=menu
+    h1 style=text-aligncenter;🎭 Tiyatro Yönetimh1
 
-<div id="oyun" class="hidden">
-    <h2>🎬 Oyunlar</h2>
+    img src=btn-oyun.png class=btn-img onclick=go('oyun')
+    img src=btn-hesap.png class=btn-img onclick=go('hesap')
+    img src=btn-rapor.png class=btn-img onclick=go('rapor')
+div
 
-    <input id="oyunInput" placeholder="Oyun adı">
-    <button class="primary" onclick="addGame()">Ekle</button>
+!-- OYUN --
+div id=oyun class=hidden
+    h2🎬 Oyunlarh2
 
-    <div id="oyunListe"></div>
+    input id=oyunInput placeholder=Oyun adı
+    button onclick=addGame()Eklebutton
 
-    <button onclick="go('menu')">⬅ Geri</button>
-</div>
+    div id=oyunListediv
 
-<div id="hesap" class="hidden">
-    <h2>🧮 Hesaplama</h2>
+    button onclick=go('menu')⬅ Geributton
+div
 
-    <div class="card">
-        <div class="label">Oyun</div>
-        <select id="oyunSelect"></select>
-    </div>
+!-- HESAP --
+div id=hesap class=hidden
+    h2🧮 Hesaplamah2
 
-    <div class="card">
-        <div class="label">Bilet Fiyatı</div>
-        <input id="price">
+    div class=card
+        select id=oyunSelectselect
+    div
 
-        <div class="label">Satılan Bilet</div>
-        <input id="sold">
+    div class=card
+        input id=price placeholder=Bilet fiyatı
+        input id=sold placeholder=Satılan bilet
+        input id=capacity placeholder=Kapasite
+    div
 
-        <div class="label">Kapasite</div>
-        <input id="capacity">
-    </div>
+    div class=card
+        input id=equip placeholder=Ekipman
+        input id=assistant placeholder=Asistan
+        input id=rent placeholder=Kira
+    div
 
-    <div class="card">
-        <div class="label">Ekipman</div>
-        <input id="equip" placeholder="500">
+    button onclick=hesapla()Hesaplabutton
+    button onclick=kaydet()💾 Kaydetbutton
 
-        <div class="label">Asistan</div>
-        <input id="assistant">
+    div id=detaydiv
+    div id=sonucdiv
 
-        <div class="label">Kira</div>
-        <input id="rent">
-    </div>
+    button onclick=go('menu')⬅ Geributton
+div
 
-    <button class="success" onclick="hesapla()">Hesapla</button>
-    <button class="primary" onclick="kaydet()">💾 Kaydet</button>
+!-- RAPOR --
+div id=rapor class=hidden
+    h2📊 Raporlarh2
 
-    <div id="detay"></div>
-    <div id="sonuc"></div>
+    div id=toplamKardiv
 
-    <button onclick="go('menu')">⬅ Geri</button>
-</div>
+    canvas id=grafik width=320 height=160canvas
 
-<div id="rapor" class="hidden">
-    <h2>📊 Raporlar</h2>
+    div id=raporListediv
 
-    <div id="toplamKar"></div>
+    button onclick=go('menu')⬅ Geributton
+div
 
-    <canvas id="grafik" width="320" height="160"></canvas>
+div
 
-    <div id="raporListe"></div>
-
-    <button onclick="go('menu')">⬅ Geri</button>
-</div>
-
-</div>
-
-<script>
-// ✅ SERVICE WORKER
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("sw.js");
+script
+ SERVICE WORKER
+if (serviceWorker in navigator) {
+  navigator.serviceWorker.register(sw.js);
 }
 
-// ================= DATA =================
-let oyunlar = JSON.parse(localStorage.getItem("oyunlar")) || [];
-let raporlar = JSON.parse(localStorage.getItem("raporlar")) || [];
+ DATA
+let oyunlar = JSON.parse(localStorage.getItem(oyunlar))  [];
+let raporlar = JSON.parse(localStorage.getItem(raporlar))  [];
 let sonHesap = null;
 
 function tl(x){
-    return Number(x).toLocaleString("tr-TR") + " ₺";
+    return Number(x).toLocaleString(tr-TR) +  ₺;
 }
 
+ NAV
 function go(id){
-    ["menu","oyun","hesap","rapor"].forEach(x=>{
-        document.getElementById(x).classList.add("hidden");
+    [menu,oyun,hesap,rapor].forEach(x={
+        document.getElementById(x).classList.add(hidden);
     });
-    document.getElementById(id).classList.remove("hidden");
+    document.getElementById(id).classList.remove(hidden);
 
-    if(id==="hesap") loadSelect();
-    if(id==="rapor"){
+    if(id===hesap) loadSelect();
+    if(id===rapor){
         loadReports();
         toplamKar();
         grafik();
     }
 }
 
+ OYUN
 function addGame(){
-    let val = document.getElementById("oyunInput").value.trim();
+    let val = document.getElementById(oyunInput).value.trim();
     if(!val) return;
 
     oyunlar.push(val);
-    localStorage.setItem("oyunlar", JSON.stringify(oyunlar));
-    document.getElementById("oyunInput").value="";
+    localStorage.setItem(oyunlar, JSON.stringify(oyunlar));
+    document.getElementById(oyunInput).value=;
     loadGames();
 }
 
 function loadGames(){
-    let el = document.getElementById("oyunListe");
-    el.innerHTML="";
-    oyunlar.forEach((o,i)=>{
+    let el = document.getElementById(oyunListe);
+    el.innerHTML=;
+    oyunlar.forEach((o,i)={
         el.innerHTML += `
-        <div class="card">
+        div class=card
             ${o}
-            <button class="danger" onclick="deleteGame(${i})">Sil</button>
-        </div>`;
+            button onclick=deleteGame(${i})Silbutton
+        div`;
     });
 }
 
 function deleteGame(i){
     oyunlar.splice(i,1);
-    localStorage.setItem("oyunlar", JSON.stringify(oyunlar));
+    localStorage.setItem(oyunlar, JSON.stringify(oyunlar));
     loadGames();
 }
 
 function loadSelect(){
-    let s = document.getElementById("oyunSelect");
-    s.innerHTML="";
-    oyunlar.forEach(o=>{
-        s.innerHTML += `<option>${o}</option>`;
+    let s = document.getElementById(oyunSelect);
+    s.innerHTML=;
+    oyunlar.forEach(o={
+        s.innerHTML += `option${o}option`;
     });
 }
 
+ HESAP
 function hesapla(){
-    let price = +document.getElementById("price").value || 0;
-    let sold = +document.getElementById("sold").value || 0;
-    let cap = +document.getElementById("capacity").value || 0;
+    let price = +price.value  0;
+    let sold = +sold.value  0;
+    let cap = +capacity.value  0;
 
-    let equip = +document.getElementById("equip").value || 500;
-    let assistant = +document.getElementById("assistant").value || 0;
-    let rent = +document.getElementById("rent").value || 0;
+    let equip = +equip.value  500;
+    let assistant = +assistant.value  0;
+    let rent = +rent.value  0;
 
-    let teknik = 3000;
-    let oyuncu = 4000;
-    let reklam = cap >= 80 ? 5000 : 2500;
-
-    let gider = equip + assistant + rent + teknik + oyuncu + reklam;
-    let gelir = price * sold;
+    let gider = equip + assistant + rent + 3000 + 4000 + (cap=8050002500);
+    let gelir = price  sold;
     let kar = gelir - gider;
-    let basabas = price > 0 ? Math.ceil(gider / price) : 0;
+    let basabas = price0  Math.ceil(giderprice)  0;
 
     sonHesap = {
-        oyun: document.getElementById("oyunSelect").value,
+        oyun oyunSelect.value,
         gelir, gider, kar, basabas,
-        tarih: new Date().toLocaleDateString()
+        tarih new Date().toLocaleDateString()
     };
 
-    document.getElementById("detay").innerHTML = `
-    <div class="card">
-        <b>Gider Detayı</b><br>
-        Ekipman: ${tl(equip)}<br>
-        Asistan: ${tl(assistant)}<br>
-        Kira: ${tl(rent)}<br>
-        Teknik: ${tl(3000)}<br>
-        Oyuncu: ${tl(4000)}<br>
-        Reklam: ${tl(reklam)}
-    </div>`;
+    detay.innerHTML = `div class=cardGider ${tl(gider)}div`;
 
-    document.getElementById("sonuc").innerHTML = `
-    <div class="result ${kar>=0?"green":"red"}">
-        Kar: ${tl(kar)}<br>
-        Gelir: ${tl(gelir)}<br>
-        Gider: ${tl(gider)}<br>
-        Başabaş: ${basabas} kişi
-    </div>`;
+    sonuc.innerHTML = `
+    div class=result ${kar=0greenred}
+        Kar ${tl(kar)}br
+        Başabaş ${basabas}
+    div`;
 }
 
+ KAYDET
 function kaydet(){
     if(!sonHesap) return;
-
     raporlar.unshift(sonHesap);
-    localStorage.setItem("raporlar", JSON.stringify(raporlar));
-    alert("Kaydedildi");
+    localStorage.setItem(raporlar, JSON.stringify(raporlar));
+    alert(Kaydedildi);
 }
 
+ RAPOR
 function loadReports(){
-    let el = document.getElementById("raporListe");
-    el.innerHTML="";
-
-    raporlar.forEach((r,i)=>{
-        el.innerHTML += `
-        <div class="card">
-            <b>${r.oyun}</b><br>
-            Tarih: ${r.tarih}<br>
-            Gelir: ${tl(r.gelir)}<br>
-            Gider: ${tl(r.gider)}<br>
-            Kar: ${tl(r.kar)}<br>
-            Başabaş: ${r.basabas}<br>
-            <button class="danger" onclick="deleteReport(${i})">Sil</button>
-        </div>`;
+    raporListe.innerHTML=;
+    raporlar.forEach((r,i)={
+        raporListe.innerHTML += `
+        div class=card
+            ${r.oyun} - ${tl(r.kar)}
+            button onclick=deleteReport(${i})Silbutton
+        div`;
     });
 }
 
 function deleteReport(i){
     raporlar.splice(i,1);
-    localStorage.setItem("raporlar", JSON.stringify(raporlar));
+    localStorage.setItem(raporlar, JSON.stringify(raporlar));
     loadReports();
     toplamKar();
     grafik();
 }
 
+ TOPLAM
 function toplamKar(){
-    let total = raporlar.reduce((a,b)=>a+b.kar,0);
-    document.getElementById("toplamKar").innerHTML = `
-    <div class="card"><b>Toplam Kar:</b> ${tl(total)}</div>`;
+    let total = raporlar.reduce((a,b)=a+b.kar,0);
+    toplamKar.innerHTML = `div class=cardToplam ${tl(total)}div`;
 }
 
+ GRAFİK
 function grafik(){
-    let canvas = document.getElementById("grafik");
-    let ctx = canvas.getContext("2d");
+    let ctx = grafik.getContext(2d);
+    ctx.clearRect(0,0,320,160);
 
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-
-    if(raporlar.length === 0) return;
-
-    let values = raporlar.map(r=>r.kar);
-    let max = Math.max(...values);
-    let min = Math.min(...values);
-    let range = max - min || 1;
-
-    raporlar.forEach((r,i)=>{
-        let x = i * 40 + 10;
-        let normalized = (r.kar - min) / range;
-        let h = normalized * 120;
-
-        ctx.fillStyle = r.kar >= 0 ? "#22c55e" : "#ef4444";
-        ctx.fillRect(x, 150 - h, 20, h);
+    raporlar.forEach((r,i)={
+        ctx.fillStyle = r.kar=0  #22c55e  #ef4444;
+        ctx.fillRect(i30+10,150 - r.kar10,20, r.kar10);
     });
 }
 
 loadGames();
-</script>
+script
 
-</body>
-</html>
+body
+html
